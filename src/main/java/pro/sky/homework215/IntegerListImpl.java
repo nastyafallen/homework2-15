@@ -1,7 +1,6 @@
 package pro.sky.homework215;
 
 import pro.sky.homework215.exception.MyIllegalArgumentException;
-
 import java.util.Objects;
 
 public class IntegerListImpl implements IntegerList {
@@ -11,7 +10,7 @@ public class IntegerListImpl implements IntegerList {
     private final Integer[] arrayListInteger;
 
     public IntegerListImpl() {
-        arrayListInteger = new Integer[100];
+        arrayListInteger = new Integer[5];
         capacity = 0;
     }
 
@@ -34,7 +33,6 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public int add(int item) {
-        checkForNull(item);
         if (capacity >= arrayListInteger.length) {
             throw new MyIllegalArgumentException("Превышение допустимых размеров массива!");
         }
@@ -44,14 +42,13 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public int add(int index, int item) {
-        checkForNull(item);
-        if (index < 0 || index > capacity) {
+        if (index < 0 || index > arrayListInteger.length) {
             throw new MyIllegalArgumentException("Ввод некорректных данных!");
         }
         if (capacity >= arrayListInteger.length) {
             throw new MyIllegalArgumentException("Превышение допустимых размеров массива!");
         }
-        for (int i = capacity; i > index; i--) {
+        for (int i = arrayListInteger.length-1; i > index; i--) {
             arrayListInteger[i] = arrayListInteger[i-1];
         }
         arrayListInteger[index] = item;
@@ -61,7 +58,7 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public int set(int index, int item) {
-        if (index < 0 || index >= capacity || index > arrayListInteger.length) {
+        if (index < 0 || index > arrayListInteger.length) {
             throw new MyIllegalArgumentException("Ввод некорректных данных!");
         }
         arrayListInteger[index] = item;
@@ -71,7 +68,7 @@ public class IntegerListImpl implements IntegerList {
     @Override
     public int remove(int item) {
         int indexForRemoving = -1;
-        for (int i = 0; i < capacity; i++) {
+        for (int i = 0; i < arrayListInteger.length; i++) {
             if (Objects.equals(item, arrayListInteger[i])) {
                 indexForRemoving = i;
                 break;
@@ -80,26 +77,26 @@ public class IntegerListImpl implements IntegerList {
         if (indexForRemoving == -1) {
             throw new MyIllegalArgumentException("Элемент не найден!");
         }
-        remove(arrayListInteger[indexForRemoving]);
+        arrayListInteger[indexForRemoving] = null;
+        capacity--;
         return item;
     }
 
     @Override
     public Integer removeByIndex(int index) {
-        if (index < 0 || index >= capacity || index > arrayListInteger.length) {
+        if (index < 0 || index > arrayListInteger.length) {
             throw new MyIllegalArgumentException("Ввод некорректных данных!");
         }
-        for (int i = index; i < capacity-1; i++) {
+        for (int i = index; i < arrayListInteger.length-1; i++) {
             arrayListInteger[i] = arrayListInteger[i+1];
         }
-        arrayListInteger[capacity-1] = null;
+        arrayListInteger[arrayListInteger.length-1] = null;
         capacity--;
         return null;
     }
 
     @Override
     public boolean contains(int item) {
-        checkForNull(item);
         sort();
 
         int min = 0;
@@ -121,7 +118,6 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public int indexOf(int item) {
-        checkForNull(item);
         int indexOfItem = -1;
         for (int i = 0; i < capacity; i++) {
             if (Objects.equals(item, arrayListInteger[i])) {
@@ -134,7 +130,6 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public int lastIndexOf(int item) {
-        checkForNull(item);
         int indexOfItem = -1;
         for (int i = capacity-1; i >= 0; i--) {
             if (Objects.equals(item, arrayListInteger[i])) {
@@ -147,7 +142,7 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public int get(int index) {
-        if (index < 0 || index > capacity) {
+        if (index < 0 || index > arrayListInteger.length) {
             throw new MyIllegalArgumentException("Ввод некорректных данных!");
         }
         return arrayListInteger[index];
@@ -194,12 +189,6 @@ public class IntegerListImpl implements IntegerList {
             result[i] = arrayListInteger[i];
         }
         return result;
-    }
-
-    public void checkForNull(Integer s) throws IllegalArgumentException{
-        if (Objects.isNull(s)) {
-            throw new IllegalArgumentException("Ввод некорректных данных!");
-        }
     }
 
     private void sort() {
