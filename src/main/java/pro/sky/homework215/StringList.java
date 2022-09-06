@@ -34,7 +34,7 @@ public interface StringList {
     // Вернуть удаленный элемент
     // или исключение, если подобный
     // элемент отсутствует в списке.
-    String remove(int index);
+    String removeByIndex(int index);
 
     // Проверка на существование элемента.
     // Вернуть true/false;

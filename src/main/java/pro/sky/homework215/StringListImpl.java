@@ -10,10 +10,17 @@ public class StringListImpl implements StringList {
     private final String[] arrayList;
 
     public StringListImpl() {
-        arrayList = new String[10];
+        arrayList = new String[3];
         capacity = 0;
     }
 
+    public StringListImpl(int n) {
+        if (n < 0) {
+            throw new MyIllegalArgumentException("Ввод некорректных данных!");
+        }
+        arrayList = new String[n];
+        capacity = 0;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -71,12 +78,12 @@ public class StringListImpl implements StringList {
         if (indexForRemoving == -1) {
             throw new MyIllegalArgumentException("Элемент не найден!");
         }
-        remove(arrayList[indexForRemoving]);
+        arrayList[indexForRemoving] = null;
         return item;
     }
 
     @Override
-    public String remove(int index) {
+    public String removeByIndex(int index) {
         if (index < 0 || index >= capacity || index > arrayList.length) {
             throw new MyIllegalArgumentException("Ввод некорректных данных!");
         }
